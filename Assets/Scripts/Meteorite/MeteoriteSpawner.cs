@@ -31,6 +31,7 @@ public class MeteoriteSpawner : MonoBehaviour
         // Get random speed value
         float meteorSpeed = Random.Range(meteoriteDetails.minSpeed, meteoriteDetails.maxSpeed);
 
+        yield return new WaitForSeconds(spawnInterval);
         // Get Gameobject with IFireable component
         IFireable meteor = (IFireable)PoolManager.Instance.ReuseComponent(meteoritePrefab, meteoritePrefab.transform.position, Quaternion.identity);
         

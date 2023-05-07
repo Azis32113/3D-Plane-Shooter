@@ -88,7 +88,7 @@ public class PlayerController : MonoBehaviour
 
             yield return null;
         }
-                
+
         yield return new WaitForSeconds(dashCooldown);
     
         isDashing = false;
