@@ -23,31 +23,56 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Move();
+        MovementInput();
     }
 
-    private void Move()
+    private void MovementInput()
     {
         // Get input from the arrow keys or WASD
-        float moveHorizontal = Input.GetAxis("Horizontal");
-        float moveVertical = Input.GetAxis("Vertical");
+        float moveHorizontal = Input.GetAxisRaw("Horizontal");
+        float moveVertical = Input.GetAxisRaw("Vertical");
+        bool shiftButtonDown = Input.GetKeyDown(KeyCode.LeftShift);
 
         // Calculate the movement direction
-        Vector3 movement = new Vector3(moveHorizontal, moveVertical, 0f);
+        Vector3 direction = new Vector3(moveHorizontal, moveVertical, 0f);
         
-        rb.velocity = movement * moveSpeed;
-
-        if (Input.GetKeyDown(KeyCode.Space) && canDash)
+        if (moveHorizontal != 0f && moveVertical != 0f)
         {
-            // Start dashing coroutine in the desired direction
-            StartCoroutine(Dash(movement));
+            direction *= 0.7f;
         }
 
+        // if there is movement either move or roll
+        if (direction != Vector3.zero)
+        {
+            if (!shiftButtonDown)
+            {
+                rb.velocity = direction * moveSpeed;
+            }
+
+            else if (shiftButtonDown && canDash)
+            {
+                StartCoroutine(Dashing(direction));
+            }
+        }
+
+        else
+        {
+            rb.velocity = Vector3.zero;
+        }
+
+        // if (Input.GetKeyDown(KeyCode.Space) && canDash)
+        // {
+        //     // Start dashing coroutine in the desired direction
+        //     StartCoroutine(Dash(movement));
+        // }
         
     }
     
-    IEnumerator Dash(Vector3 direction)
+    IEnumerator Dashing(Vector3 direction)
     {
+        // minDistance used to decide when to exit coroutine loop
+        float minDistance = 0.2f;
+
         isDashing = true;
         canDash = false;
 
@@ -55,11 +80,12 @@ public class PlayerController : MonoBehaviour
         Vector3 destination = transform.position + direction * dashDistance;
 
         // Move the player to the destination position over the dash duration
-        float elapsedTime = 0f;
-        while (elapsedTime < dashDuration)
+        while (Vector3.Distance(transform.position, destination) > minDistance)
         {
-            rb.MovePosition(Vector3.Lerp(transform.position, destination, elapsedTime / dashDuration));
-            elapsedTime += Time.deltaTime;
+            Vector3 unitVector = Vector3.Normalize(destination - transform.position);
+
+            rb.MovePosition(rb.position + (unitVector * moveSpeed * Time.fixedDeltaTime));
+
             yield return null;
         }
                 
