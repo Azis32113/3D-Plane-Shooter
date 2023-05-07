@@ -13,18 +13,19 @@ MonoBehaviour:
   m_Name: MeteorDetails_1
   m_EditorClassIdentifier: 
   meteorPrefab: {fileID: 9062611953008850226, guid: 1598a8d4488449a429a3c13f9abd1e1b, type: 3}
-  minSpeed: 10
-  maxSpeed: 20
-  meteorRange: 100
-  minPositionX: 0
-  maxPositionX: 25
-  minPositionY: 0
-  maxPositionY: 25
-  minPositionZ: 255
-  maxPositionZ: 360
-  minRotationX: 0
-  maxRotationX: 160
-  minRotationY: 0
-  maxRotationY: 160
-  minRotationZ: 0
-  maxRotationZ: 160
+  minSpeed: 50
+  maxSpeed: 100
+  minScale: 3
+  maxScale: 10
+  minPositionX: -110
+  maxPositionX: 110
+  minPositionY: -110
+  maxPositionY: 110
+  minPositionZ: 250
+  maxPositionZ: 300
+  minRotationX: -180
+  maxRotationX: 180
+  minRotationY: -180
+  maxRotationY: 180
+  minRotationZ: -180
+  maxRotationZ: 180

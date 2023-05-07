@@ -11,7 +11,8 @@ public class MeteoriteDetailsSO : ScriptableObject
     public float minSpeed;
     public float maxSpeed;
     [Space(10)]
-    public float meteorRange;
+    public float minScale;
+    public float maxScale;
     [Space(10)]
     public float minPositionX;
     public float maxPositionX;

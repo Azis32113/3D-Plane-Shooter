@@ -8,27 +8,25 @@ public class Meteorite : MonoBehaviour, IFireable
     private float meteorRange;
     private float meteorSpeed;
     private Vector3 moveDirectionVector;
+    private Rigidbody rb;
 
+    private void Start()
+    {
+        rb = GetComponent<Rigidbody>();
+    }
     private void Update()
     {
-        // Calculate distance vector to move ammo
-        Vector3 distanceVector = moveDirectionVector * meteorSpeed * Time.deltaTime;
-        
-        // Disable after max range reached
-        meteorRange -= distanceVector.magnitude;
+        this.rb.velocity = moveDirectionVector * meteorSpeed;
 
-        if (meteorRange < 0f)
+        if (gameObject.transform.position.z <= -20f)
         {
             DisableMeteor();
         }
-
     }
 
     public void InitialiseMeteorite(MeteoriteDetailsSO meteoriteDetails, float meteorSpeed, Vector3 moveDirectionVector)
     {
         SetDirection(meteoriteDetails);
-
-        meteorRange = meteoriteDetails.meteorRange;
 
         this.meteorSpeed = meteorSpeed;
 
@@ -40,6 +38,8 @@ public class Meteorite : MonoBehaviour, IFireable
 
     private void SetDirection(MeteoriteDetailsSO meteoriteDetails)
     {
+        // calculate random spread angle between min and max
+        float randomScale = Random.Range(meteoriteDetails.minScale, meteoriteDetails.maxScale);
         
         // calculate random spread angle between min and max
         float randomPositionX = Random.Range(meteoriteDetails.minPositionX, meteoriteDetails.maxPositionX);
@@ -58,6 +58,8 @@ public class Meteorite : MonoBehaviour, IFireable
 
         // calculate random spread angle between min and max
         float randomRotationZ = Random.Range(meteoriteDetails.minRotationZ, meteoriteDetails.maxRotationZ);
+
+        transform.localScale = new Vector3(randomScale, randomScale, randomScale);
 
         transform.position = new Vector3(randomPositionX, randomPositionY, randomPositionZ);
 
